@@ -12,6 +12,10 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+/**
+ * Created by Luis Hernandez on 26/April/2018
+ */
+
 public class HttpHandler {
     private static final String TAG = HttpHandler.class.getSimpleName();
 
@@ -43,7 +47,7 @@ public class HttpHandler {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 
-        String line;
+        String line="";
         try {
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append('\n');
