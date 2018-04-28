@@ -150,7 +150,23 @@ public class MainActivity extends AppCompatActivity
             // Show 3 total pages.
             return 3;
         }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position){
+                case 0:
+                    return "Day";
+                case 1:
+                    return "Week";
+                case 2:
+                    return "Month";
+                default:
+                    return "Day";
+            }
+        }
+
     }
+
 
 
 
