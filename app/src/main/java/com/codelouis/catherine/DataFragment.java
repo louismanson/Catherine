@@ -68,10 +68,15 @@ public class DataFragment extends Fragment {
         return rootView;
     }
 
+    public void refresh(){
+        new GetContacts().execute();
+    }
+
+
     /**
      * Async task class to get json by making HTTP call
      */
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
+     private class GetContacts extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
