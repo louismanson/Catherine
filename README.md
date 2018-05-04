@@ -1,6 +1,6 @@
 # Catherine
 
-[![N|Solid](http://www.maestriasenensenada.mx/images/modulos/cetys_universidad-logo.png)](https://nodesource.com/products/nsolid)
+[![N|Solid](http://www.maestriasenensenada.mx/images/modulos/cetys_universidad-logo.png)]
 
 Description of the app
 
