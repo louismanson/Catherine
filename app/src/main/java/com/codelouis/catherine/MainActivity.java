@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 /**
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 DataFragment page = (DataFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + mViewPager.getCurrentItem());
                 page.refresh();
+                Toast.makeText(getApplicationContext(),"Endpoint server call (contacts example)", Toast.LENGTH_SHORT).show();
             }
         });
 
