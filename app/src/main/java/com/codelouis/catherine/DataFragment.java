@@ -64,6 +64,7 @@ public class DataFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_datafragment, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+        TextView mPeopleNumber = (TextView) rootView.findViewById(R.id.person_count);
         textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
         contactList = new ArrayList<>();
@@ -75,6 +76,7 @@ public class DataFragment extends Fragment {
 
         switch (getArguments().getInt(ARG_SECTION_NUMBER)){
             case 1:
+                mPeopleNumber.setText("310");
                 series = new LineGraphSeries<>(new DataPoint[] {
                         new DataPoint(0, 1),
                         new DataPoint(1, 2),
@@ -84,6 +86,7 @@ public class DataFragment extends Fragment {
                 });
                 break;
             case 2:
+                mPeopleNumber.setText("1,321");
                 series = new LineGraphSeries<>(new DataPoint[] {
                         new DataPoint(0, 1),
                         new DataPoint(1, 5),
@@ -93,6 +96,7 @@ public class DataFragment extends Fragment {
                 });
                 break;
             case 3:
+                mPeopleNumber.setText("12,453");
                 series = new LineGraphSeries<>(new DataPoint[] {
                         new DataPoint(0, 1),
                         new DataPoint(1, 5),
