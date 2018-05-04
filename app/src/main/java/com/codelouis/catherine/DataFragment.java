@@ -14,6 +14,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +41,8 @@ public class DataFragment extends Fragment {
     private static String url = "https://api.androidhive.info/contacts/";
 
     ArrayList<HashMap<String, String>> contactList;
+
+    LineGraphSeries<DataPoint> series;
 
     public DataFragment() {
     }
@@ -63,7 +69,49 @@ public class DataFragment extends Fragment {
         contactList = new ArrayList<>();
         lv = (ListView) rootView.findViewById(R.id.list3);
 
-        new GetContacts().execute();
+
+        //dumy values
+        GraphView graph = (GraphView) rootView.findViewById(R.id.graph);
+
+        switch (getArguments().getInt(ARG_SECTION_NUMBER)){
+            case 1:
+                series = new LineGraphSeries<>(new DataPoint[] {
+                        new DataPoint(0, 1),
+                        new DataPoint(1, 2),
+                        new DataPoint(2, 3),
+                        new DataPoint(3, 4),
+                        new DataPoint(4, 6)
+                });
+                break;
+            case 2:
+                series = new LineGraphSeries<>(new DataPoint[] {
+                        new DataPoint(0, 1),
+                        new DataPoint(1, 5),
+                        new DataPoint(2, 6),
+                        new DataPoint(3, 2),
+                        new DataPoint(4, 1)
+                });
+                break;
+            case 3:
+                series = new LineGraphSeries<>(new DataPoint[] {
+                        new DataPoint(0, 1),
+                        new DataPoint(1, 5),
+                        new DataPoint(2, 3),
+                        new DataPoint(3, 2),
+                        new DataPoint(4, 6),
+                        new DataPoint(5, 1),
+                        new DataPoint(6, 5),
+                        new DataPoint(7, 7),
+                        new DataPoint(8, 2),
+                        new DataPoint(9, 6)
+                });
+                break;
+        }
+
+        graph.addSeries(series);
+
+        //run Async server call
+        //new GetContacts().execute();
 
         return rootView;
     }
