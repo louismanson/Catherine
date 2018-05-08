@@ -1,11 +1,11 @@
 # Catherine
 
-[![N|Solid](http://www.maestriasenensenada.mx/images/modulos/cetys_universidad-logo.png)]
+![N|Solid](http://www.maestriasenensenada.mx/images/modulos/cetys_universidad-logo.png)
 
 Description of the app
 
 ### Run
-To run this project you will need install [Android Studio](http://www.maestriasenensenada.mx/images/modulos/cetys_universidad-logo.png).
+To run this project you will need install [Android Studio](https://developer.android.com/studio/).
 
 ### Resources
 
@@ -30,13 +30,19 @@ Dillinger uses a number of open source projects to work properly:
 | Resource | Name |
 | ------ | ------ |
 | Android Developer | Luis Enrique Hernandez Navarro |
-| xxxxxxxxxx | xxxxxxxxxx |
-| ...... | ..... |
+| Embedded Developer | Jorge |
+| Backend Developer | Eduardo |
+| version control and Embedded System Support | Felipe |
+| Analyst and Embedded System Support | Alejandra |
+| Analyst and Backend Support | Vicente |
+| Analyst and Documentation. | Daniel |
+| Proyect Manager | Miguel |
 
 
 ### Adviser
 
-Dr Adan Hirales
+Dr. Adan Hirales
+adan.hirales@cetys.mx 
 
 
 
@@ -45,5 +51,5 @@ License
 
 MIT
 
-
+Graph View [Apache 2.0](https://github.com/jjoe64/GraphView/blob/master/license.txt)
 
