@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 DataFragment page = (DataFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + mViewPager.getCurrentItem());
                 page.refresh();
+
                 Toast.makeText(getApplicationContext(),"Endpoint server call (contacts example)", Toast.LENGTH_SHORT).show();
             }
         });

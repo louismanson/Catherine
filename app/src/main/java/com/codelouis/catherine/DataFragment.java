@@ -44,6 +44,8 @@ public class DataFragment extends Fragment {
 
     LineGraphSeries<DataPoint> series;
 
+    private AnimationDialogFragment mLoadingFragment;
+
     public DataFragment() {
     }
 
@@ -137,11 +139,12 @@ public class DataFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
-            pDialog = new ProgressDialog(getContext());
+            /*pDialog = new ProgressDialog(getContext());
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
-            pDialog.show();
-
+            pDialog.show();*/
+            mLoadingFragment = new AnimationDialogFragment ();
+            mLoadingFragment.show(getFragmentManager(), "Sample Fragment");
         }
 
         @Override
@@ -222,8 +225,9 @@ public class DataFragment extends Fragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
+            /*if (pDialog.isShowing())
+                pDialog.dismiss();*/
+            mLoadingFragment.dismiss();
             /**
              * Updating parsed JSON data into ListView
              * */
