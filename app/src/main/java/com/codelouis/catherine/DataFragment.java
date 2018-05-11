@@ -144,7 +144,7 @@ public class DataFragment extends Fragment {
             pDialog.setCancelable(false);
             pDialog.show();*/
             mLoadingFragment = new AnimationDialogFragment ();
-            mLoadingFragment.show(getFragmentManager(), "Sample Fragment");
+            mLoadingFragment.show(getFragmentManager(), "Loading");
         }
 
         @Override

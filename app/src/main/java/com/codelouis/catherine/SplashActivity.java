@@ -8,8 +8,6 @@ import android.os.Bundle;
 import com.airbnb.lottie.LottieAnimationView;
 
 public class SplashActivity extends AppCompatActivity {
-
-    private LottieAnimationView animationView;
     private final int DURACION_SPLASH = 3000;
 
     @Override
@@ -17,7 +15,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        animationView = (LottieAnimationView) findViewById(R.id.animation_view);
 
         new Handler().postDelayed(new Runnable(){
             public void run(){
