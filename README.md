@@ -12,30 +12,35 @@ To run this project you will need install [Android Studio](https://developer.and
 
 ### Resources
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque laoreet dolor non mauris bibendum tempus. Mauris sed nulla sem. Vivamus ornare nulla urna, non tempus lorem placerat eget. Aenean semper, risus ac sodales rhoncus, enim tortor faucibus enim, quis sollicitudin orci ex suscipit risus
+* [*Kotlin* Version]
 
 * [Backend] - Repo
 * [Sensors] - Script
 * [Documentation] - Drive.
-* [[Slides]](https://docs.google.com/presentation/d/1ZonFMW0jEg3Vclw5XwLQlOT_wUk5ootA-tGuoL0KyrM/edit#slide=id.p)
+* [Slides](https://docs.google.com/presentation/d/1ZonFMW0jEg3Vclw5XwLQlOT_wUk5ootA-tGuoL0KyrM/edit#slide=id.p)
 
-Development Tools:
-  - Android Studio
-  - Github
-  - Zenhub
-  - Slack
-  - Google Drive
-  - Lucid Chart
-  - Gallery
-  - Sketch
-  - Fluter
+###Tools:
+
+##Development
+  - [Android Studio](https://developer.android.com/studio/)
   - TensorFlow
   - Graph View
   - Airbnb Lottie
   - Firebase
 
+##Proyect Managmet
 
-This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
+  - Github
+  - Zenhub
+  - Slack
+  - Google Drive
+
+##Desing
+  - Lucid Chart
+  - Gallery
+  - Sketch
+  - Flutter
+
 
 ### Development Team
 
@@ -60,7 +65,7 @@ adan.hirales@cetys.mx
 
 
 
-License
+Licenses
 ----
 
 MIT
