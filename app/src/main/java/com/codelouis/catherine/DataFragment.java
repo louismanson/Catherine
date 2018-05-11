@@ -37,8 +37,8 @@ public class DataFragment extends Fragment {
     private ProgressDialog pDialog;
     private ListView lv;
 
-    // URL to get contacts JSON
-    private static String url = "https://api.androidhive.info/contacts/";
+    // URL to get contacts JSON Endpoint
+    private static String url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebajson.json?alt=media&token=d5c47f6c-2eb1-433a-8cdd-060f9df93ab0";
 
     ArrayList<HashMap<String, String>> contactList;
 
