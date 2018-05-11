@@ -2,7 +2,10 @@
 
 ![N|Solid](http://www.maestriasenensenada.mx/images/modulos/cetys_universidad-logo.png)
 
-Description of the app
+This application is a client for a remote monitoring system, based on a person counter system, the application displays the statistics that the cloud system processes.
+
+At this  moment the application only shows a count of users with graphics, but the architecture of this allows an escalation to handle multiple instances of sensors, single sign-on, support for languages, widgets, error reporting, etc.
+
 
 ### Run
 To run this project you will need install [Android Studio](https://developer.android.com/studio/).
@@ -11,14 +14,25 @@ To run this project you will need install [Android Studio](https://developer.and
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque laoreet dolor non mauris bibendum tempus. Mauris sed nulla sem. Vivamus ornare nulla urna, non tempus lorem placerat eget. Aenean semper, risus ac sodales rhoncus, enim tortor faucibus enim, quis sollicitudin orci ex suscipit risus
 
-* [Backend] - HTML enhanced for web apps!
-* [Sensors] - awesome web-based text editor
-* [Documentation] - Markdown parser done right. Fast and easy to extend.
+* [Backend] - Repo
+* [Sensors] - Script
+* [Documentation] - Drive.
+* [[Slides]](https://docs.google.com/presentation/d/1ZonFMW0jEg3Vclw5XwLQlOT_wUk5ootA-tGuoL0KyrM/edit#slide=id.p)
 
-You can also:
-  - Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  - Drag and drop markdown and HTML files into Dillinger
-  - Export documents as Markdown, HTML and PDF
+Development Tools:
+  - Android Studio
+  - Github
+  - Zenhub
+  - Slack
+  - Google Drive
+  - Lucid Chart
+  - Gallery
+  - Sketch
+  - Fluter
+  - TensorFlow
+  - Graph View
+  - Airbnb Lottie
+  - Firebase
 
 
 This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
