@@ -88,30 +88,13 @@ public class DataFragment extends Fragment {
                 break;
             case 2:
                 textView.setText("Last Month");
-                mPeopleNumber.setText("1,321");
-                series = new LineGraphSeries<>(new DataPoint[] {
-                        new DataPoint(0, 1),
-                        new DataPoint(1, 5),
-                        new DataPoint(2, 6),
-                        new DataPoint(3, 2),
-                        new DataPoint(4, 1)
-                });
+                url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebaano.json?alt=media&token=9919f0eb-4022-4ef2-80e2-c939a246f4d2";
+                new GetContacts().execute();
                 break;
             case 3:
                 textView.setText("Last Year");
-                mPeopleNumber.setText("12,453");
-                series = new LineGraphSeries<>(new DataPoint[] {
-                        new DataPoint(0, 1),
-                        new DataPoint(1, 5),
-                        new DataPoint(2, 3),
-                        new DataPoint(3, 2),
-                        new DataPoint(4, 6),
-                        new DataPoint(5, 1),
-                        new DataPoint(6, 5),
-                        new DataPoint(7, 7),
-                        new DataPoint(8, 2),
-                        new DataPoint(9, 6)
-                });
+                url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebames.json?alt=media&token=92a5465a-bcbe-4dc8-9814-6388ee46b34c";
+                new GetContacts().execute();
                 break;
         }
 
