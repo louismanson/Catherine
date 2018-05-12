@@ -38,13 +38,17 @@ public class DataFragment extends Fragment {
     private ListView lv;
 
     // URL to get contacts JSON Endpoint
-    private static String url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebajson.json?alt=media&token=d5c47f6c-2eb1-433a-8cdd-060f9df93ab0";
+    private String url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebajson.json?alt=media&token=d5c47f6c-2eb1-433a-8cdd-060f9df93ab0";
 
     ArrayList<HashMap<String, String>> contactList;
 
     LineGraphSeries<DataPoint> series;
 
     private AnimationDialogFragment mLoadingFragment;
+
+    private TextView mPeopleNumber;
+
+    private GraphView graph;
 
     public DataFragment() {
     }
@@ -66,7 +70,7 @@ public class DataFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_datafragment, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        TextView mPeopleNumber = (TextView) rootView.findViewById(R.id.person_count);
+        mPeopleNumber = (TextView) rootView.findViewById(R.id.person_count);
         //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
         contactList = new ArrayList<>();
@@ -74,19 +78,13 @@ public class DataFragment extends Fragment {
 
 
         //dumy values
-        GraphView graph = (GraphView) rootView.findViewById(R.id.graph);
+        graph = (GraphView) rootView.findViewById(R.id.graph);
 
         switch (getArguments().getInt(ARG_SECTION_NUMBER)){
             case 1:
                 textView.setText("Today");
-                mPeopleNumber.setText("310");
-                series = new LineGraphSeries<>(new DataPoint[] {
-                        new DataPoint(0, 1),
-                        new DataPoint(1, 2),
-                        new DataPoint(2, 3),
-                        new DataPoint(3, 4),
-                        new DataPoint(4, 6)
-                });
+                url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebajson.json?alt=media&token=d5c47f6c-2eb1-433a-8cdd-060f9df93ab0";
+                new GetContacts().execute();
                 break;
             case 2:
                 textView.setText("Last Month");
@@ -117,7 +115,7 @@ public class DataFragment extends Fragment {
                 break;
         }
 
-        graph.addSeries(series);
+        //graph.addSeries(series);
 
         //run Async server call
         //new GetContacts().execute();
@@ -158,38 +156,47 @@ public class DataFragment extends Fragment {
 
             if (jsonStr != null) {
                 try {
+                    contactList.clear();
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    JSONArray contacts = jsonObj.getJSONArray("contacts");
+                    JSONArray serverData = jsonObj.getJSONArray("lecturas");
 
                     // looping through All Contacts
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
+                    for (int i = 0; i < serverData.length(); i++) {
+                        JSONObject c = serverData.getJSONObject(i);
 
-                        String id = c.getString("id");
+                        /*String id = c.getString("id");
                         String name = c.getString("name");
-                        String email = c.getString("email");
-                        String address = c.getString("address");
-                        String gender = c.getString("gender");
+                        String email = c.getString("email");*/
+
+                        String date = c.getString("date");
+                        String time = c.getString("time");
+                        String count = c.getString("count");
+                        //String address = c.getString("address");
+                        //String gender = c.getString("gender");
 
                         // Phone node is JSON Object
-                        JSONObject phone = c.getJSONObject("phone");
+                        /*JSONObject phone = c.getJSONObject("phone");
                         String mobile = phone.getString("mobile");
                         String home = phone.getString("home");
-                        String office = phone.getString("office");
+                        String office = phone.getString("office");*/
 
                         // tmp hash map for single contact
-                        HashMap<String, String> contact = new HashMap<>();
+                        //HashMap<String, String> contact = new HashMap<>();
+                        HashMap<String, String> data = new HashMap<>();
 
                         // adding each child node to HashMap key => value
-                        contact.put("id", id);
+                        /*contact.put("id", id);
                         contact.put("name", name);
                         contact.put("email", email);
-                        contact.put("mobile", mobile);
+                        contact.put("mobile", mobile);*/
+                        data.put("time", time);
+                        data.put("date", date);
+                        data.put("count", count);
 
                         // adding contact to contact list
-                        contactList.add(contact);
+                        contactList.add(data);
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -228,16 +235,30 @@ public class DataFragment extends Fragment {
             /*if (pDialog.isShowing())
                 pDialog.dismiss();*/
             mLoadingFragment.dismiss();
+
+            ///render data
+            int counter = 0;
+            LineGraphSeries<DataPoint> serie = new LineGraphSeries<>();
+            graph.removeAllSeries();
+
+            for (int i = 0; i < contactList.size(); i++) {
+                counter = counter + Integer.parseInt(contactList.get(i).get("count"));
+                serie.appendData(new DataPoint(i,Double.parseDouble(contactList.get(i).get("count"))),true,contactList.size());
+            }
+
+            mPeopleNumber.setText(Integer.toString(counter));
+            graph.addSeries(serie);
+
             /**
              * Updating parsed JSON data into ListView
              * */
-            ListAdapter adapter = new SimpleAdapter(
+            /*ListAdapter adapter = new SimpleAdapter(
                     getContext(), contactList,
-                    R.layout.list_item, new String[]{"name", "email",
-                    "mobile"}, new int[]{R.id.name,
+                    R.layout.list_item, new String[]{"date", "time",
+                    "count"}, new int[]{R.id.name,
                     R.id.email, R.id.mobile});
 
-            lv.setAdapter(adapter);
+            lv.setAdapter(adapter);*/
         }
 
     }
