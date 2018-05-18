@@ -42,8 +42,6 @@ public class DataFragment extends Fragment {
 
     ArrayList<HashMap<String, String>> contactList;
 
-    LineGraphSeries<DataPoint> series;
-
     private AnimationDialogFragment mLoadingFragment;
 
     private TextView mPeopleNumber;
