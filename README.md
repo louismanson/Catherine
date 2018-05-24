@@ -23,7 +23,7 @@ To run this project you will need install [Android Studio](https://developer.and
 * [Documentation] - Drive.
 * [Slides](https://docs.google.com/presentation/d/1ZonFMW0jEg3Vclw5XwLQlOT_wUk5ootA-tGuoL0KyrM/edit#slide=id.p)
 
-###T ools:
+### Tools:
 
 ## Development
   - [Android Studio](https://developer.android.com/studio/)
@@ -49,7 +49,6 @@ To run this project you will need install [Android Studio](https://developer.and
 
 ### Development Team
 
-Dillinger uses a number of open source projects to work properly:
 
 | Resource | Name |
 | ------ | ------ |
