@@ -1,6 +1,10 @@
 package com.codelouis.catherine;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,7 +20,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 /**
@@ -24,13 +41,27 @@ import android.widget.Toast;
  */
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private String TAG = MainActivity.class.getSimpleName();
 
     private TabLayout tabLayout;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+
+    private View headerView;
+
+    private ImageView photoImageView;
+    private TextView nameTextView;
+    private TextView emailTextView;
+    private ImageView backgroundView;
+    private Menu navOptionsMenu;
+
+
+    private GoogleApiClient googleApiClient;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +87,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Create the adapter that will return a fragment for each of the three
@@ -70,6 +101,61 @@ public class MainActivity extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        headerView = navigationView.getHeaderView(0);
+
+        setNavigationViewListner();
+
+
+        /***********/
+
+        photoImageView = (ImageView) headerView.findViewById(R.id.avatar_photo);
+        nameTextView = (TextView) headerView.findViewById(R.id.avatar_name);
+        emailTextView = (TextView) headerView.findViewById(R.id.avatar_mail);
+        backgroundView = (ImageView) headerView.findViewById(R.id.avatar_background);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    setUserData(user);
+                    navigationView.getMenu().getItem(0).setVisible(false);
+                    navigationView.getMenu().getItem(1).setVisible(true);
+                } else {
+                    nameTextView.setText("Guest");
+                    emailTextView.setText(" ");
+                    backgroundView.setImageResource(R.color.cardview_dark_background);
+                    photoImageView.setImageResource(R.mipmap.ic_launcher_round);
+                    //goLogInScreen();
+                    navigationView.getMenu().getItem(0).setVisible(true);
+                    navigationView.getMenu().getItem(1).setVisible(false);
+                }
+            }
+        };
+
+    }
+
+    private void setNavigationViewListner() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void setUserData(FirebaseUser user) {
+        Toast.makeText(this, "Loging as "+ user.getEmail(), Toast.LENGTH_SHORT).show();
+        nameTextView.setText(user.getDisplayName());
+        emailTextView.setText(user.getEmail());
+        Glide.with(getApplicationContext()).load("https://picsum.photos/400/250/?random").into(backgroundView);
+        Glide.with(getApplicationContext()).load(user.getPhotoUrl()).into(photoImageView);
     }
 
     @Override
@@ -88,6 +174,8 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -110,9 +198,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_login) {
+            goLogInScreen();
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_logout) {
+            revoke();
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -127,6 +217,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
 
@@ -169,8 +264,36 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        firebaseAuth.addAuthStateListener(firebaseAuthListener);
+    }
 
+    private void goLogInScreen() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
+    public void revoke() {
+        firebaseAuth.signOut();
 
+        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if (status.isSuccess()) {
+                    //goLogInScreen();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.not_revoke, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
