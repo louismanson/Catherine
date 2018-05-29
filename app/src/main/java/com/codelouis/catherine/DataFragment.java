@@ -81,17 +81,29 @@ public class DataFragment extends Fragment {
         switch (getArguments().getInt(ARG_SECTION_NUMBER)){
             case 1:
                 textView.setText("Today");
-                url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebajson.json?alt=media&token=d5c47f6c-2eb1-433a-8cdd-060f9df93ab0";
+                if(BuildConfig.FLAVOR.equals("firebase")) {
+                    url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebajson.json?alt=media&token=d5c47f6c-2eb1-433a-8cdd-060f9df93ab0";
+                }else if (BuildConfig.FLAVOR.equals("azure")){
+                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde=2018-1-1&hasta=2019-1-1";
+                }
                 new GetContacts().execute();
                 break;
             case 2:
                 textView.setText("Last Month");
-                url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebaano.json?alt=media&token=9919f0eb-4022-4ef2-80e2-c939a246f4d2";
+                if(BuildConfig.FLAVOR.equals("firebase")) {
+                    url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebaano.json?alt=media&token=9919f0eb-4022-4ef2-80e2-c939a246f4d2";
+                }if (BuildConfig.FLAVOR.equals("azure")){
+                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde=2018-1-1&hasta=2019-1-1";
+                }
                 new GetContacts().execute();
                 break;
             case 3:
                 textView.setText("Last Year");
-                url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebames.json?alt=media&token=92a5465a-bcbe-4dc8-9814-6388ee46b34c";
+                if(BuildConfig.FLAVOR.equals("firebase")) {
+                    url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebames.json?alt=media&token=92a5465a-bcbe-4dc8-9814-6388ee46b34c";
+                }if (BuildConfig.FLAVOR.equals("azure")){
+                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde=2018-1-1&hasta=2019-1-1";
+                }
                 new GetContacts().execute();
                 break;
         }
@@ -117,11 +129,6 @@ public class DataFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
-            /*pDialog = new ProgressDialog(getContext());
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();*/
             mLoadingFragment = new AnimationDialogFragment ();
             mLoadingFragment.show(getFragmentManager(), "Loading");
         }
@@ -137,47 +144,61 @@ public class DataFragment extends Fragment {
 
             if (jsonStr != null) {
                 try {
-                    contactList.clear();
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    if(BuildConfig.FLAVOR.equals("firebase")) {
+                        contactList.clear();
+                        JSONObject jsonObj = new JSONObject(jsonStr);
 
-                    // Getting JSON Array node
-                    JSONArray serverData = jsonObj.getJSONArray("lecturas");
+                        // Getting JSON Array node
+                        JSONArray serverData = jsonObj.getJSONArray("lecturas");
 
-                    // looping through All Contacts
-                    for (int i = 0; i < serverData.length(); i++) {
-                        JSONObject c = serverData.getJSONObject(i);
+                        // looping through All Contacts
+                        for (int i = 0; i < serverData.length(); i++) {
+                            JSONObject c = serverData.getJSONObject(i);
 
-                        /*String id = c.getString("id");
-                        String name = c.getString("name");
-                        String email = c.getString("email");*/
+                            String date = c.getString("date");
+                            String time = c.getString("time");
+                            String count = c.getString("count");
 
-                        String date = c.getString("date");
-                        String time = c.getString("time");
-                        String count = c.getString("count");
-                        //String address = c.getString("address");
-                        //String gender = c.getString("gender");
-
-                        // Phone node is JSON Object
+                            // Phone node is JSON Object
                         /*JSONObject phone = c.getJSONObject("phone");
                         String mobile = phone.getString("mobile");
                         String home = phone.getString("home");
                         String office = phone.getString("office");*/
 
-                        // tmp hash map for single contact
-                        //HashMap<String, String> contact = new HashMap<>();
-                        HashMap<String, String> data = new HashMap<>();
+                            // tmp hash map for single contact
+                            //HashMap<String, String> contact = new HashMap<>();
+                            HashMap<String, String> data = new HashMap<>();
 
-                        // adding each child node to HashMap key => value
+                            // adding each child node to HashMap key => value
                         /*contact.put("id", id);
                         contact.put("name", name);
                         contact.put("email", email);
                         contact.put("mobile", mobile);*/
-                        data.put("time", time);
-                        data.put("date", date);
-                        data.put("count", count);
+                            data.put("time", time);
+                            data.put("date", date);
+                            data.put("count", count);
 
-                        // adding contact to contact list
-                        contactList.add(data);
+                            // adding contact to contact list
+                            contactList.add(data);
+                        }
+                    }else if(BuildConfig.FLAVOR.equals("azure")) {
+                        contactList.clear();
+                        JSONArray serverData = new JSONArray(jsonStr);
+                        for (int i = 0; i < serverData.length(); i++) {
+                            JSONObject c = serverData.getJSONObject(i);
+                            String date = c.getString("fecha");
+                            String time = c.getString("tiempo");
+                            String count = c.getString("total");
+
+                            HashMap<String, String> data = new HashMap<>();
+
+                            data.put("time", time);
+                            data.put("date", date);
+                            data.put("count", count);
+
+                            // adding contact to contact list
+                            contactList.add(data);
+                        }
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -213,9 +234,8 @@ public class DataFragment extends Fragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-            /*if (pDialog.isShowing())
-                pDialog.dismiss();*/
-            mLoadingFragment.dismiss();
+            if (mLoadingFragment.isVisible())
+                mLoadingFragment.dismiss();
 
             ///render data
             int counter = 0;

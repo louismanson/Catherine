@@ -16,10 +16,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "backend"
+    productFlavors {
+        firebase {
+            applicationId
+            "com.codelouis.catherine"
+            versionName "firebase"
+            dimension "backend"
+        }
+        azure {
+            applicationId
+            "com.codelouis.catherine.azure"
+            versionName "azure"
+            dimension "backend"
+        }
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:design:27.1.1'
@@ -33,7 +48,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:12.0.1'
     implementation 'com.google.android.gms:play-services-auth:12.0.1'
     implementation 'com.google.firebase:firebase-auth:12.0.1'
-
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 }
