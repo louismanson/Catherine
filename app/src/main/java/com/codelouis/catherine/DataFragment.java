@@ -22,7 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -78,13 +81,26 @@ public class DataFragment extends Fragment {
         //dumy values
         graph = (GraphView) rootView.findViewById(R.id.graph);
 
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-M-d ");
+
         switch (getArguments().getInt(ARG_SECTION_NUMBER)){
             case 1:
                 textView.setText("Today");
                 if(BuildConfig.FLAVOR.equals("firebase")) {
                     url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebajson.json?alt=media&token=d5c47f6c-2eb1-433a-8cdd-060f9df93ab0";
                 }else if (BuildConfig.FLAVOR.equals("azure")){
-                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde=2018-1-1&hasta=2019-1-1";
+                    Calendar calendar = Calendar.getInstance();
+                    String toDate = mdformat.format(calendar.getTime());
+                    String fromDate = "";
+                    if(calendar.get(Calendar.MONTH)==0 && calendar.get(Calendar.DAY_OF_MONTH)==1){
+                        fromDate = fromDate + (calendar.get(Calendar.YEAR)-1) + "-12-31";
+                    }else if(calendar.get(Calendar.DAY_OF_MONTH)==1){
+                        fromDate = fromDate + calendar.get(Calendar.YEAR) +"-"+ calendar.get(Calendar.MONTH) + "-30";
+                    }else{
+                        fromDate = fromDate + calendar.get(Calendar.YEAR) +"-"+ (calendar.get(Calendar.MONTH)+1) +"-"+ (calendar.get(Calendar.DAY_OF_MONTH)-1);
+                    }
+                    Log.d(TAG, "day "+fromDate + " " +toDate);
+                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde="+fromDate+"&hasta="+toDate;
                 }
                 new GetContacts().execute();
                 break;
@@ -93,7 +109,15 @@ public class DataFragment extends Fragment {
                 if(BuildConfig.FLAVOR.equals("firebase")) {
                     url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebaano.json?alt=media&token=9919f0eb-4022-4ef2-80e2-c939a246f4d2";
                 }if (BuildConfig.FLAVOR.equals("azure")){
-                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde=2018-1-1&hasta=2019-1-1";
+                    Calendar calendar = Calendar.getInstance();
+                    String toDate = mdformat.format(calendar.getTime());
+                    String fromDate = "";
+                    if(calendar.get(Calendar.MONTH)==0){
+                        fromDate = fromDate + (calendar.get(Calendar.YEAR)-1) + "-12-" +calendar.get(Calendar.DAY_OF_MONTH);
+                    }
+                    fromDate = fromDate + calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+                    Log.d(TAG, "month "+fromDate + " " +toDate);
+                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde="+fromDate+"&hasta="+toDate;
                 }
                 new GetContacts().execute();
                 break;
@@ -102,7 +126,11 @@ public class DataFragment extends Fragment {
                 if(BuildConfig.FLAVOR.equals("firebase")) {
                     url = "https://firebasestorage.googleapis.com/v0/b/polyfireapp2.appspot.com/o/pruebames.json?alt=media&token=92a5465a-bcbe-4dc8-9814-6388ee46b34c";
                 }if (BuildConfig.FLAVOR.equals("azure")){
-                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde=2018-1-1&hasta=2019-1-1";
+                    Calendar calendar = Calendar.getInstance();
+                    String toDate = mdformat.format(calendar.getTime());
+                    String fromDate = (calendar.get(Calendar.YEAR)-1)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+                    Log.d(TAG, "year "+fromDate + " " +toDate);
+                    url = "http://imi359.azurewebsites.net/api/v2/humanos/obtenerhumanoporrangofecha?desde="+fromDate+"&hasta="+toDate;
                 }
                 new GetContacts().execute();
                 break;
